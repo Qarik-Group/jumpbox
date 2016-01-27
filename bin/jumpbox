@@ -1,0 +1,257 @@
+#!/bin/bash
+
+#
+# jumpbox - set up a new BOSH director jumpbox
+#
+
+set -e
+
+step() {
+	echo -e ">> \e[35m$*\e[0m"
+}
+
+say() {
+	echo -e "   $*"
+}
+
+ok() {
+	echo -e "   \e[32m$*\e[0m"
+}
+
+fail() {
+	echo -e "   \e[31m$*\e[0m"
+}
+
+warn() {
+	echo -e "   \e[33m$*\e[0m"
+}
+
+version() {
+	local bin=$1
+	local flag=$2
+
+	if [[ -n "$(command -v ${bin})" ]]; then
+		ok "${bin} installed - $(${bin} ${flag} 2>&1)"
+	else
+		fail "${bin} not installed"
+	fi
+}
+
+have() {
+	local bin=$1
+	local flag=$2
+	local vers=$3
+
+	if [[ -z ${vers} ]]; then
+		step "Installing ${bin}"
+		return 1
+	fi
+
+	step "Checking for ${bin} v${vers}"
+	if [[ -n "$(command -v ${bin})" ]]; then
+		if ${bin} ${flag} 2>/dev/null | grep -q "${vers}"; then
+			ok "${bin} is already installed ($(${bin} ${flag} 2>&1))"
+			return 0
+		fi
+	fi
+
+	step "Installing ${bin} v${vers}"
+	return 1
+}
+
+installed() {
+	local bin=$1
+	local flag=$2
+	local msg=${3:$bin}
+
+	ok "installed ${msg} ($(${bin} ${flag} 2>&1))"
+}
+
+hello() {
+	label=$(echo -ne "\e[01;32m(( jumpbox ))\e[0m")
+	cat <<EOF
+                   _.-+.
+              _.-""     '.
+          +:""            '.
+          J \\               '.
+           L \\             _.-+
+           |  '.       _.-"   |
+           J    \\  _.-"       L
+            L    +"          J
+            +    |           |     $label
+             \\   |          .+
+              \\  |       .-'
+               \\ |    .-'
+                \\| .-'
+                 +
+
+EOF
+}
+
+install_core_packages() {
+	step "Installing Core System Packages (via apt-get)"
+	sudo apt-get update >/dev/null
+	sudo apt-get install -y git tmux tree pwgen
+}
+
+install_spruce() {
+	if ! have spruce -v $1; then
+		curl -LSs https://github.com/geofffranks/spruce/releases/download/v${1}/spruce_${1}_linux_amd64.tar.gz > /tmp/spruce.tar.gz
+		(cd /tmp ; tar -xzvf /tmp/spruce.tar.gz)
+		sudo cp /tmp/spruce_${1}_linux_amd64/spruce /usr/local/bin
+		sudo chmod 0755 /usr/local/bin/spruce
+		rm -rf /tmp/spruce.tar.gz /tmp/spruce_${vers}_linux_amd64
+		ok "spruce is installed ($(spruce -v 2>&1))"
+	else
+		ok "spruce is already installed ($(spruce -v 2>&1))"
+	fi
+}
+
+install_jq() {
+	if ! have jq --version ${1}; then
+		sudo curl -LSs -o /usr/local/bin/jq \
+			https://github.com/stedolan/jq/releases/download/jq-${1}/jq-linux64
+		sudo chmod 0755 /usr/local/bin/jq
+		installed jq --version
+	fi
+}
+
+install_genesis() {
+	if ! have genesis ident ; then  # we never version-match genesis
+		sudo curl -LSs -o /usr/local/bin/genesis \
+			https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis
+		sudo chmod 0755 /usr/local/bin/genesis
+		installed genesis ident
+	fi
+}
+
+install_rvm() {
+	step "Installing rvm"
+	if [[ -z "$(command -v rvm)" ]]; then
+		say "RVM is not already installed"
+		say "Importing GPG key..."
+
+		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+		say "Running RVM install via curl | sh"
+		curl -sSL https://get.rvm.io | bash -s stable --ruby
+
+		source ~/.rvm/scripts/rvm
+		ok "RVM is installed ($(rvm -v 2>&1))"
+	else
+		ok "RVM is already installed ($(rvm -v 2>&1))"
+	fi
+}
+
+install_ruby() {
+	if ! have ruby -v ${1}; then
+		rvm install ruby-$1
+		installed ruby -v
+	fi
+}
+
+install_bosh_cli() {
+	if ! have bosh -v ${1}; then
+		gem install --no-ri --no-rdoc --version "${1}" bosh_cli
+		installed bosh -v "BOSH CLI"
+	fi
+}
+
+git_config() {
+	local gituser=$(git config --global user.name)
+	local gitemail=$(git config --global user.email)
+
+	if [[ -z ${gituser} ]]; then
+		fail "git user.name is not set"
+	else
+		say "git user.name  is '${gituser}'"
+	fi
+
+	if [[ -z ${gitemail} ]]; then
+		fail "git user.email is not set"
+	else
+		say "git user.email is '${gitemail}'"
+	fi
+}
+
+configure_git_identity() {
+	local gituser=$(git config --global user.name)
+	local gitemail=$(git config --global user.email)
+
+	if [[ -z "${gituser}" ]]; then
+		while [[ -z "${gituser}" ]]; do
+			echo -n "Your Full Name (for git): "
+			read gituser
+		done
+		git config --global user.name "${gituser}"
+	else
+		ok "Git username is already set to '${gituser}'"
+	fi
+
+	if [[ -z "${gitemail}" ]]; then
+		while [[ -z "${gitemail}" ]]; do
+			echo -n "Your Email Address (for git): "
+			read gitemail
+		done
+		git config --global user.email "${gitemail}"
+	else
+		ok "Git email address is already set to '${gitemail}'"
+	fi
+
+	git config --global credential.helper "cache --timeout=3600000"
+	git config --global http.sslverify false
+	git config --global push.default matching
+
+	ok "git is configured"
+}
+
+all_done() {
+	echo
+	echo
+	echo
+	ok "ALL DONE"
+	exit 0
+}
+
+case "$1" in
+(user)
+	hello
+	install_rvm
+	install_ruby     ${RUBY_VERSION:-2.2.1}
+	install_bosh_cli ${BOSH_VERSION:-1.3177.0}
+	configure_git_identity
+	all_done
+	say "(You should now log out and log back in)"
+	;;
+
+(system)
+	hello
+	install_core_packages
+	install_spruce  ${SPRUCE_VERSION:-1.0.1}
+	install_jq      ${JQ_VERSION:-1.5}
+	install_genesis
+	all_done
+	;;
+
+("")
+	hello
+	step "Checking jumpbox installation"
+	version ruby -v
+	version rvm -v
+	version bosh -v
+	version jq --version
+	version spruce -v
+	version genesis ident
+	echo
+	git_config
+	echo
+	say "To bootstrap this installation,  try \`jumpbox system\`"
+	say "To set up your personal environment: \`jumpbox user\`"
+	;;
+
+(*)
+	echo >&2 "USAGE: $0 [system|user]"
+	exit 1
+	;;
+esac
+
+# vim:ft=bash
