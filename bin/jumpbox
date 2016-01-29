@@ -149,6 +149,15 @@ install_ruby() {
 	fi
 }
 
+install_bosh_init() {
+	if ! have bosh-init -v ${1}; then
+		sudo curl -LSs -o /usr/local/bin/bosh-init \
+			https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${1}-linux-amd64
+		sudo chmod 0755 /usr/local/bin/bosh-init
+		installed bosh-init -v
+	fi
+}
+
 install_bosh_cli() {
 	if ! have bosh -v ${1}; then
 		gem install --no-ri --no-rdoc --version "${1}" bosh_cli
@@ -226,8 +235,9 @@ case "$1" in
 (system)
 	hello
 	install_core_packages
-	install_spruce  ${SPRUCE_VERSION:-1.0.1}
-	install_jq      ${JQ_VERSION:-1.5}
+	install_spruce    ${SPRUCE_VERSION:-1.0.1}
+	install_jq        ${JQ_VERSION:-1.5}
+	install_bosh_init ${BOSH_INIT_VERSION:-0.0.81}
 	install_genesis
 	all_done
 	;;
@@ -238,6 +248,7 @@ case "$1" in
 	version ruby -v
 	version rvm -v
 	version bosh -v
+	version bosh-init -v
 	version jq --version
 	version spruce -v
 	version genesis ident
