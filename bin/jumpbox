@@ -97,7 +97,7 @@ install_core_packages() {
 install_spruce() {
 	if ! have spruce -v $1; then
 		curl -LSs https://github.com/geofffranks/spruce/releases/download/v${1}/spruce_${1}_linux_amd64.tar.gz > /tmp/spruce.tar.gz
-		(cd /tmp ; tar -xzvf /tmp/spruce.tar.gz)
+		(cd /tmp ; tar -xzf /tmp/spruce.tar.gz)
 		sudo cp /tmp/spruce_${1}_linux_amd64/spruce /usr/local/bin
 		sudo chmod 0755 /usr/local/bin/spruce
 		rm -rf /tmp/spruce.tar.gz /tmp/spruce_${vers}_linux_amd64
