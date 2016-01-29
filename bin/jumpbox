@@ -127,6 +127,9 @@ install_genesis() {
 
 install_rvm() {
 	step "Installing rvm"
+	if [[ ! -f ~/.rvmrc ]]; then
+		echo rvm_silence_path_mismatch_check_flag=1 > ~/.rvmrc
+	fi
 	if [[ -z "$(command -v rvm)" ]]; then
 		say "RVM is not already installed"
 		say "Importing GPG key..."
