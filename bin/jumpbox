@@ -101,9 +101,7 @@ install_spruce() {
 		sudo cp /tmp/spruce_${1}_linux_amd64/spruce /usr/local/bin
 		sudo chmod 0755 /usr/local/bin/spruce
 		rm -rf /tmp/spruce.tar.gz /tmp/spruce_${vers}_linux_amd64
-		ok "spruce is installed ($(spruce -v 2>&1))"
-	else
-		ok "spruce is already installed ($(spruce -v 2>&1))"
+		installed spruce -v
 	fi
 }
 
