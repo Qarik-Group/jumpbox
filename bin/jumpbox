@@ -91,7 +91,7 @@ EOF
 install_core_packages() {
 	step "Installing Core System Packages (via apt-get)"
 	sudo apt-get update >/dev/null
-	sudo apt-get install -y git tmux tree pwgen
+	sudo apt-get install -y git tmux tree pwgen unzip
 }
 
 install_spruce() {
