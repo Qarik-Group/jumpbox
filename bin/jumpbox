@@ -177,6 +177,12 @@ install_bosh_cli() {
 }
 
 git_config() {
+	if [[ -z "$(command -v git)" ]]; then
+		fail "git is not installed"
+		return
+	fi
+
+	echo
 	local gituser=$(git config --global user.name)
 	local gitemail=$(git config --global user.email)
 
@@ -265,7 +271,6 @@ case "$1" in
 	version spruce -v
 	version vault -v
 	version genesis ident
-	echo
 	git_config
 	echo
 	say "To bootstrap this installation,  try \`jumpbox system\`"
