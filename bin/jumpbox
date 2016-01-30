@@ -107,6 +107,16 @@ install_spruce() {
 	fi
 }
 
+install_vault() {
+	if ! have vault -v $1; then
+		curl -LSs -o /tmp/vault.zip \
+			https://releases.hashicorp.com/vault/${1}/vault_${1}_linux_amd64.zip
+		(cd /usr/local/bin ; sudo unzip /tmp/vault.zip)
+		sudo chmod 0755 /usr/local/bin/vault
+		installed vault -v
+	fi
+}
+
 install_jq() {
 	if ! have jq --version ${1}; then
 		sudo curl -LSs -o /usr/local/bin/jq \
@@ -240,6 +250,7 @@ case "$1" in
 	install_core_packages
 	install_spruce    ${SPRUCE_VERSION:-1.0.1}
 	install_jq        ${JQ_VERSION:-1.5}
+	install_vault     ${VAULT_VERSION:-0.4.1}
 	install_bosh_init ${BOSH_INIT_VERSION:-0.0.81}
 	install_genesis
 	all_done
@@ -254,6 +265,7 @@ case "$1" in
 	version bosh-init -v
 	version jq --version
 	version spruce -v
+	version vault -v
 	version genesis ident
 	echo
 	git_config
