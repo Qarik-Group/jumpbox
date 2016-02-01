@@ -29,7 +29,7 @@ Grab the latest copy from Github and put it in your `$PATH`:
 Usage
 -----
 
-`jumpbox` operates in two modes: `system` and `me`
+`jumpbox` operates in two modes: `system` and `user`
 
 You only have to run **system** mode once per box.  It installs
 global utilities that live outside of individual user home
@@ -37,15 +37,15 @@ directories, like `spruce`, `jq`, etc.
 
     sudo jumpbox system
 
-Every user on the jumpbox needs to run **me** mode at least
+Every user on the jumpbox needs to run **user** mode at least
 once.  This will set up `rvm`, the ruby dependencies and the
 `bosh` CLI utility, inside that user's home directory.
 
-    jumpbox me
+    jumpbox user
 
 `jumpbox` can also create user accounts on the local machine:
 
-    jumpbox user
+    jumpbox useradd
     Full name: Joe User
     Username:  juser
     sudo] password for ubuntu:

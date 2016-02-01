@@ -239,7 +239,7 @@ all_done() {
 }
 
 case "$1" in
-(me)
+(user)
 	hello
 	install_rvm
 	install_ruby     ${RUBY_VERSION:-2.2.1}
@@ -260,7 +260,7 @@ case "$1" in
 	all_done
 	;;
 
-(user)
+(useradd)
 	hello
 	step "Provisioning a new user account"
 	full_name=""
@@ -276,6 +276,8 @@ case "$1" in
 
 	sudo useradd -c "${full_name}" -g staff -m -s /bin/bash "${user_name}"
 	sudo usermod -aG sudo "${user_name}"
+	sudo passwd "${user_name}"
+	echo
 	echo "You should run \`jumpbox user\` now, as ${user_name}:"
 	echo "  sudo -iu ${user_name}"
 	echo "  jumpbox user"
@@ -296,11 +298,11 @@ case "$1" in
 	git_config
 	echo
 	say "To bootstrap this installation,  try \`jumpbox system\`"
-	say "To set up your personal environment: \`jumpbox me\`"
+	say "To set up your personal environment: \`jumpbox user\`"
 	;;
 
 (*)
-	echo >&2 "USAGE: $0 [system|me|user]"
+	echo >&2 "USAGE: $0 [system|user|useradd]"
 	exit 1
 	;;
 esac
