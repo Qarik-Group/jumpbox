@@ -24,7 +24,7 @@ Grab the latest copy from Github and put it in your `$PATH`:
 
     sudo curl -o /usr/local/bin/jumpbox \
       https://raw.githubusercontent.com/jhunt/jumpbox/master/bin/jumpbox
-    sudo chmod 0755 /usr/local/bin/genesis
+    sudo chmod 0755 /usr/local/bin/jumpbox
 
 Usage
 -----
