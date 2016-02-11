@@ -14,6 +14,7 @@ all necessary utilities for running BOSH deployments, including:
   - **bosh** - The BOSH CLI itself
   - **genesis** - For creating multi-tiered deployment repos
   - **spruce** - A YAML multitool for managing BOSH manifests
+  - **safe** - An alternate CLI for Hashicorp's Vault
   - **jq** - A JSON query utility
 
 
