@@ -1,4 +1,5 @@
 #!/bin/bash
+VERSION=42
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -24,6 +25,14 @@ fail() {
 
 warn() {
 	echo -e "   \e[33m$*\e[0m"
+}
+
+yesno() {
+	read -p "$(echo -e "   \e[34m$*\e[0m [Y/n]: ")" answer
+	case ${answer} in
+	(y|Y|yes) echo "y" ;;
+	(*)       echo "n" ;;
+	esac
 }
 
 version() {
@@ -293,9 +302,39 @@ case "$1" in
 	echo
 	;;
 
+(sync)
+	hello
+	step "Downloading latest version of \`jumpbox\` from Github"
+	tmpfile=$(mktemp /tmp/jumpbox.XXXXXXXXX)
+	trap "rm -f ${tmpfile}" QUIT INT TERM EXIT
+	curl -Lso "${tmpfile}" https://raw.githubusercontent.com/jhunt/jumpbox/master/bin/jumpbox
+
+	if diff -q ${tmpfile} ${BASH_SOURCE[0]} &>/dev/null; then
+		# exit 0 = no difference between files
+		echo "${BASH_SOURCE[0]} is already at the latest version"
+		exit 0
+	fi
+
+	if [[ $(yesno "Upgrade?") != "y" ]]; then
+		fail "Bailing out..."
+		exit 1
+	fi
+
+	if cat ${tmpfile} > ${BASH_SOURCE[0]}; then
+		exec $0 version
+	fi
+	fail "Upgrade failed..."
+	exit 1
+	;;
+
+(-v|--version|version)
+	echo "jumpbox v${VERSION}"
+	;;
+
 ("")
 	hello
 	step "Checking jumpbox installation"
+	version jumpbox -v
 	version ruby -v
 	version rvm -v
 	version bosh -v
@@ -309,6 +348,8 @@ case "$1" in
 	echo
 	say "To bootstrap this installation,  try \`jumpbox system\`"
 	say "To set up your personal environment: \`jumpbox user\`"
+	say "To update this copy of jumpbox, use: \`jumpbox sync\`"
+	say "To create a new local user account:  \`jumpbox useradd\`"
 	;;
 
 (*)
