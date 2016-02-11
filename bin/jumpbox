@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=42
+VERSION=43
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -126,7 +126,7 @@ install_vault() {
 	if ! have vault -v $1; then
 		curl -LSs -o /tmp/vault.zip \
 			https://releases.hashicorp.com/vault/${1}/vault_${1}_linux_amd64.zip
-		(cd /usr/local/bin ; sudo unzip /tmp/vault.zip)
+		(cd /usr/local/bin ; sudo unzip -u /tmp/vault.zip ; rm /tmp/vault.zip)
 		sudo chmod 0755 /usr/local/bin/vault
 		installed vault -v
 	fi
