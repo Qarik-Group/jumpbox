@@ -142,11 +142,11 @@ install_jq() {
 }
 
 install_genesis() {
-	if ! have genesis ident ; then  # we never version-match genesis
+	if ! have genesis -v; then  # we never version-match genesis
 		sudo curl -LSs -o /usr/local/bin/genesis \
 			https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis
 		sudo chmod 0755 /usr/local/bin/genesis
-		installed genesis ident
+		installed genesis -v
 	fi
 }
 
@@ -343,7 +343,7 @@ case "$1" in
 	version spruce -v
 	version safe -v
 	version vault -v
-	version genesis ident
+	version genesis -v
 	git_config
 	echo
 	say "To bootstrap this installation,  try \`jumpbox system\`"
