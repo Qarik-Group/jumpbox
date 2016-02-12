@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=43
+VERSION=44
 
 #
 # jumpbox - set up a new BOSH director jumpbox
