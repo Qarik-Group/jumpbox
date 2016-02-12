@@ -103,20 +103,33 @@ install_core_packages() {
 	sudo apt-get install -y git tmux tree pwgen unzip
 }
 
+github_version() {
+	local v=${1}
+	local repo=${2}
+	if [[ "${v}" == "latest" ]]; then
+		meta=$(curl -Ls https://api.github.com/repos/${repo}/releases/latest)
+		tag=$(jq -r .tag_name <(echo "${meta}"))
+		v=${tag#v}
+	fi
+	echo ${v}
+}
+
 install_spruce() {
 	# only works on v1.0.2 or newer
-	if ! have spruce -v $1; then
+	local v=$(github_version ${1} geofffranks/spruce)
+	if ! have spruce -v ${v}; then
 		sudo curl -LSs -o /usr/local/bin/spruce \
-			https://github.com/geofffranks/spruce/releases/download/v${1}/spruce-linux-amd64
+			https://github.com/geofffranks/spruce/releases/download/v${v}/spruce-linux-amd64
 		sudo chmod 0755 /usr/local/bin/spruce
 		installed spruce -v
 	fi
 }
 
 install_safe() {
-	if ! have safe -v $1; then
+	local v=$(github_version ${1} jhunt/safe)
+	if ! have safe -v ${v}; then
 		sudo curl -LSs -o /usr/local/bin/safe \
-			https://github.com/jhunt/safe/releases/download/v${1}/safe-linux-amd64
+			https://github.com/jhunt/safe/releases/download/v${v}/safe-linux-amd64
 		sudo chmod 0755 /usr/local/bin/safe
 		installed safe -v
 	fi
@@ -269,8 +282,8 @@ case "$1" in
 (system)
 	hello
 	install_core_packages
-	install_spruce    ${SPRUCE_VERSION:-1.0.2}
-	install_safe      ${SAFE_VERSION:-0.0.1}
+	install_spruce    ${SPRUCE_VERSION:-latest}
+	install_safe      ${SAFE_VERSION:-latest}
 	install_jq        ${JQ_VERSION:-1.5}
 	install_vault     ${VAULT_VERSION:-0.5.0}
 	install_bosh_init ${BOSH_INIT_VERSION:-0.0.81}
