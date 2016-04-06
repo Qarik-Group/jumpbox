@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=44
+VERSION=45
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -98,9 +98,16 @@ EOF
 }
 
 install_core_packages() {
-	step "Installing Core System Packages (via apt-get)"
-	sudo apt-get update >/dev/null
-	sudo apt-get install -y git tmux tree pwgen unzip
+	if [[ -n $(command -v apt-get) ]]; then
+		step "Installing Core System Packages (via apt-get)"
+		sudo apt-get update >/dev/null
+		sudo apt-get install -y git tmux tree pwgen unzip
+
+	elif [[ -n $(command -v yum) ]]; then
+		step "Installing Core System Packages (via yum)"
+		sudo yum update >/dev/null
+		sudo yum install -y git tmux tree pwgen unzip
+	fi
 }
 
 github_version() {
