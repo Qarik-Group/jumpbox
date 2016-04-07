@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=45
+VERSION=46
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -193,6 +193,7 @@ install_rvm() {
 install_ruby() {
 	if ! have ruby -v ${1}; then
 		rvm install ruby-$1
+		rvm --default use $1
 		installed ruby -v
 	fi
 }
