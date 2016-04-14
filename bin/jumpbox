@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=46
+VERSION=47
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -276,6 +276,7 @@ all_done() {
 	exit 0
 }
 
+PATH=/usr/local/bin:$PATH
 case "$1" in
 (user)
 	hello
@@ -290,9 +291,9 @@ case "$1" in
 (system)
 	hello
 	install_core_packages
+	install_jq        ${JQ_VERSION:-1.5}
 	install_spruce    ${SPRUCE_VERSION:-latest}
 	install_safe      ${SAFE_VERSION:-latest}
-	install_jq        ${JQ_VERSION:-1.5}
 	install_vault     ${VAULT_VERSION:-0.5.0}
 	install_bosh_init ${BOSH_INIT_VERSION:-0.0.81}
 	install_genesis
