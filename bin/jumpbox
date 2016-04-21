@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=47
+VERSION=48
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -193,7 +193,6 @@ install_rvm() {
 install_ruby() {
 	if ! have ruby -v ${1}; then
 		rvm install ruby-$1
-		rvm --default use $1
 		installed ruby -v
 	fi
 }
@@ -281,8 +280,8 @@ case "$1" in
 (user)
 	hello
 	install_rvm
-	install_ruby     ${RUBY_VERSION:-2.2.1}
-	install_bosh_cli ${BOSH_VERSION:-1.3177.0}
+	install_ruby     ${WANT_RUBY_VERSION:-2.2.1}
+	install_bosh_cli ${WANT_BOSH_VERSION:-1.3177.0}
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
@@ -291,11 +290,11 @@ case "$1" in
 (system)
 	hello
 	install_core_packages
-	install_jq        ${JQ_VERSION:-1.5}
-	install_spruce    ${SPRUCE_VERSION:-latest}
-	install_safe      ${SAFE_VERSION:-latest}
-	install_vault     ${VAULT_VERSION:-0.5.0}
-	install_bosh_init ${BOSH_INIT_VERSION:-0.0.81}
+	install_jq        ${WANT_JQ_VERSION:-1.5}
+	install_spruce    ${WANT_SPRUCE_VERSION:-latest}
+	install_safe      ${WANT_SAFE_VERSION:-latest}
+	install_vault     ${WANT_VAULT_VERSION:-0.5.0}
+	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis
 	all_done
 	;;
