@@ -181,7 +181,7 @@ install_rvm() {
 
 		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 		say "Running RVM install via curl | sh"
-		curl -sSL https://get.rvm.io | bash -s stable --ruby
+		curl -sSL https://get.rvm.io | bash -s stable
 
 		source ~/.rvm/scripts/rvm
 		ok "RVM is installed ($(rvm -v 2>&1))"
@@ -280,8 +280,8 @@ case "$1" in
 (user)
 	hello
 	install_rvm
-	install_ruby     ${WANT_RUBY_VERSION:-2.2.1}
-	install_bosh_cli ${WANT_BOSH_VERSION:-1.3177.0}
+	install_ruby     ${WANT_RUBY_VERSION:-2.2.4}
+	install_bosh_cli ${WANT_BOSH_VERSION:-1.3184.1.0}
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
