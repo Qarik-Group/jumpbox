@@ -162,9 +162,10 @@ install_jq() {
 }
 
 install_genesis() {
-	if ! have genesis -v; then  # we never version-match genesis
+	local v=$(github_version ${1} starkandwayne/genesis)
+	if ! have genesis -v ${v}; then
 		sudo curl -LSs -o /usr/local/bin/genesis \
-			https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis
+			https://github.com/starkandwayne/genesis/releases/download/v${v}/genesis
 		sudo chmod 0755 /usr/local/bin/genesis
 		installed genesis -v
 	fi
