@@ -51,7 +51,7 @@ once.  This will set up `rvm`, the ruby dependencies and the
     Username:  juser
     sudo] password for ubuntu:
     You should run `jumpbox user` now, as juser:
-      sudo -iu jhunt
+      sudo -iu juser
       jumpbox user
 
 Contributing
