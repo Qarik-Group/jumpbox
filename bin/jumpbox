@@ -105,7 +105,7 @@ install_core_packages() {
 
 	elif [[ -n $(command -v yum) ]]; then
 		step "Installing Core System Packages (via yum)"
-		sudo yum update >/dev/null
+		sudo yum update -y >/dev/null
 		sudo yum install -y git tmux tree pwgen unzip
 	fi
 }
