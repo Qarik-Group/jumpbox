@@ -296,7 +296,7 @@ case "$1" in
 	install_safe      ${WANT_SAFE_VERSION:-latest}
 	install_vault     ${WANT_VAULT_VERSION:-0.5.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
-	install_genesis   ${WANT_GENESIS_VERSION:-1.5.0}
+	install_genesis   ${WANT_GENESIS_VERSION:-latest}
 	all_done
 	;;
 
