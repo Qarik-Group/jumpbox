@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=48
+VERSION=49
 
 #
 # jumpbox - set up a new BOSH director jumpbox
@@ -214,6 +214,17 @@ install_bosh_cli() {
 	fi
 }
 
+passwordless_sudo() {
+	groupadd jumpbox
+	if ! grep -q '%jumpbox' /etc/sudoers; then
+		cat >>/etc/sudoers <<EOF
+
+# for jumpbox access
+%jumpbox ALL=(ALL:ALL) NOPASSWD: ALL
+EOF
+	fi
+}
+
 git_config() {
 	if [[ -z "$(command -v git)" ]]; then
 		fail "git is not installed"
@@ -297,6 +308,7 @@ case "$1" in
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
+	passwordless_sudo
 	all_done
 	;;
 
@@ -315,7 +327,7 @@ case "$1" in
 	done
 
 	sudo useradd -c "${full_name}" -g staff -m -s /bin/bash "${user_name}"
-	sudo usermod -aG sudo "${user_name}"
+	sudo usermod -aG jumpbox "${user_name}"
 	sudo passwd "${user_name}"
 	echo
 	echo "You should run \`jumpbox user\` now, as ${user_name}:"
