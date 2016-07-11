@@ -133,10 +133,10 @@ install_spruce() {
 }
 
 install_safe() {
-	local v=$(github_version ${1} jhunt/safe)
+	local v=$(github_version ${1} starkandwayne/safe)
 	if ! have safe -v ${v}; then
 		sudo curl -LSs -o /usr/local/bin/safe \
-			https://github.com/jhunt/safe/releases/download/v${v}/safe-linux-amd64
+			https://github.com/starkandwayne/safe/releases/download/v${v}/safe-linux-amd64
 		sudo chmod 0755 /usr/local/bin/safe
 		installed safe -v
 	fi
