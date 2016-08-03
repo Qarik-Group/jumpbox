@@ -107,6 +107,26 @@ install_core_packages() {
 		step "Installing Core System Packages (via yum)"
 		sudo yum update -y >/dev/null
 		sudo yum install -y git tmux tree pwgen unzip
+
+	elif [[ -n $(command -v zypper) ]]; then
+		step "Installing Core System Packages (via zypper)"
+		# tmux
+		if [[ -z $(command -v tmux ) ]]; then
+			# http://download.opensuse.org/repositories/home:/MTISupport/SLE_11_SP2/x86_64/tmux-1.7-5.3.x86_64.rpm
+			zypper addrepo http://download.opensuse.org/repositories/home:MTISupport/SLE_11_SP2/home:MTISupport.repo
+		fi
+		# pwgen
+		if [[ -z $(command -v pwgen ) ]]; then
+			# http://download.opensuse.org/repositories/home:/michalstrnad/SLE_12/x86_64/pwgen-2.07-286.2.x86_64.rpm
+			zypper addrepo http://download.opensuse.org/repositories/home:michalstrnad/SLE_12/home:michalstrnad.repo
+		fi
+		# tree
+		if [[ -z $(command -v tree ) ]]; then
+			# http://download.opensuse.org/repositories/home:/nelsonglory/SLE_12/x86_64/tree-1.7.0-26.3.x86_64.rpm
+			zypper addrepo http://download.opensuse.org/repositories/home:nelsonglory/SLE_12/home:nelsonglory.repo
+		fi
+		zypper refresh >/dev/null
+		zypper install git-core unzip tmux pwgen tree
 	fi
 }
 
