@@ -237,10 +237,6 @@ install_bosh_cli() {
 install_golang() {
 	if ! have go version ${1}; then 
 		sudo apt-get install golang-go || sudo yum install golang
-		mkdir ${HOME}/work
-		export GOPATH=${HOME}/work >> ${HOME}/.profile
-		export PATH=${PATH >> ${HOME}/.profile
-		go get github.com/tools/godep
 	fi
 }
 
