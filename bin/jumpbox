@@ -234,21 +234,12 @@ install_bosh_cli() {
 	fi
 }
 
-install_golang() {
-	if ! have go version ${1}; then 
-		sudo apt-get install golang-go || sudo yum install golang
-	fi
-}
-
 install_certstrap() {
-	rm -rf certstrap || true
 	sudo rm -f /usr/local/bin/certstrap || true
-	git clone https://github.com/square/certstrap
-	cd certstrap
-	./build
-	sudo mv ./bin/certstrap /usr/local/bin/certstrap
-	rm -rf ../certstrap
-	echo "Installed Certstrap"
+	sudo curl -o /usr/local/bin/certstrap \
+	https://raw.githubusercontent.com/starkandwayne/jumpbox/go_certstrap/bin/certstrap
+	sudo chmod 0755 /usr/local/bin/certstrap
+	echo "Installed certstrap"
 }
 
 passwordless_sudo() {
@@ -345,7 +336,6 @@ case "$1" in
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
-	install_golang    ${WANT_GOLANG_VERSION:-1.6}
 	install_certstrap 
 	passwordless_sudo
 	all_done
