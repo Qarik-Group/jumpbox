@@ -234,6 +234,14 @@ install_bosh_cli() {
 	fi
 }
 
+install_certstrap() {
+	sudo rm -f /usr/local/bin/certstrap || true
+	sudo curl -o /usr/local/bin/certstrap \
+	https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/certstrap
+	sudo chmod 0755 /usr/local/bin/certstrap
+	echo "Installed certstrap"
+}
+
 passwordless_sudo() {
 	groupadd jumpbox
 	if ! grep -q '%jumpbox' /etc/sudoers; then
@@ -328,6 +336,7 @@ case "$1" in
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
+	install_certstrap 
 	passwordless_sudo
 	all_done
 	;;
