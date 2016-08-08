@@ -236,7 +236,7 @@ install_bosh_cli() {
 
 install_golang() {
 	if ! have go version ${1}; then 
-		sudo apt-get install golang-go
+		sudo apt-get install golang-go || sudo yum install golang
 		mkdir ${HOME}/work
 		export GOPATH=${HOME}/work >> ${HOME}/.profile
 		export PATH=${PATH >> ${HOME}/.profile
@@ -349,7 +349,7 @@ case "$1" in
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
-        install_golang    ${WANT_GOLANG_VERSION:-1.6}
+	install_golang    ${WANT_GOLANG_VERSION:-1.6}
 	install_certstrap 
 	passwordless_sudo
 	all_done
