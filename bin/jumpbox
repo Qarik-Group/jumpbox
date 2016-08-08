@@ -237,7 +237,7 @@ install_bosh_cli() {
 install_certstrap() {
 	sudo rm -f /usr/local/bin/certstrap || true
 	sudo curl -o /usr/local/bin/certstrap \
-	https://raw.githubusercontent.com/starkandwayne/jumpbox/go_certstrap/bin/certstrap
+	https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/certstrap
 	sudo chmod 0755 /usr/local/bin/certstrap
 	echo "Installed certstrap"
 }
