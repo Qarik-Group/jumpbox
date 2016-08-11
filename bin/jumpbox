@@ -101,12 +101,12 @@ install_core_packages() {
 	if [[ -n $(command -v apt-get) ]]; then
 		step "Installing Core System Packages (via apt-get)"
 		sudo apt-get update >/dev/null
-		sudo apt-get install -y git tmux tree pwgen unzip
+		sudo apt-get install -y git tmux tree pwgen unzip nmap
 
 	elif [[ -n $(command -v yum) ]]; then
 		step "Installing Core System Packages (via yum)"
 		sudo yum update -y >/dev/null
-		sudo yum install -y git tmux tree pwgen unzip
+		sudo yum install -y git tmux tree pwgen unzip nmap
 
 	elif [[ -n $(command -v zypper) ]]; then
 		step "Installing Core System Packages (via zypper)"
@@ -126,7 +126,7 @@ install_core_packages() {
 			zypper addrepo http://download.opensuse.org/repositories/home:nelsonglory/SLE_12/home:nelsonglory.repo
 		fi
 		zypper refresh >/dev/null
-		zypper install git-core unzip tmux pwgen tree
+		zypper install git-core unzip tmux pwgen tree nmap
 	fi
 }
 
