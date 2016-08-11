@@ -242,6 +242,14 @@ install_certstrap() {
 	echo "Installed certstrap"
 }
 
+install_sipcalc() {
+	sudo rm -f /usr/local/bin/sipcalc || true
+	sudo curl -o /usr/local/bin/sipcalc \
+	https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/sipcalc
+	sudo chmod 0755 /usr/local/bin/sipcalc
+	echo "Installed sipcalc"
+}
+
 passwordless_sudo() {
 	groupadd jumpbox
 	if ! grep -q '%jumpbox' /etc/sudoers; then
@@ -336,7 +344,8 @@ case "$1" in
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
-	install_certstrap 
+	install_certstrap
+	install_sipcalc
 	passwordless_sudo
 	all_done
 	;;
