@@ -38,6 +38,11 @@ directories, like `spruce`, `jq`, etc.
 
     sudo jumpbox system
 
+Note that for CentOS 6 & 7 you will need to specify the absolute 
+path to `jumpbox` when using `sudo`:
+
+    sudo /usr/local/bin/jumpbox
+
 Every user on the jumpbox needs to run **user** mode at least
 once.  This will set up `rvm`, the ruby dependencies and the
 `bosh` CLI utility, inside that user's home directory.
