@@ -252,7 +252,7 @@ install_sipcalc() {
 
 passwordless_sudo() {
 	sudo groupadd jumpbox
-	if ! grep -q '%jumpbox' /etc/sudoers; then
+	if ! sudo grep -q '%jumpbox' /etc/sudoers; then
 		sudo tee -a /etc/sudoers <<EOF
 
 # for jumpbox access
