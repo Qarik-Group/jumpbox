@@ -12,10 +12,13 @@ all necessary utilities for running BOSH deployments, including:
   - **ruby** - For the BOSH CLI
   - **bosh-init** - Tool for bootstrapping a new BOSH director
   - **bosh** - The BOSH CLI itself
+  - **cf** - The CF CLI itself
   - **genesis** - For creating multi-tiered deployment repos
   - **spruce** - A YAML multitool for managing BOSH manifests
   - **safe** - An alternate CLI for Hashicorp's Vault
   - **jq** - A JSON query utility
+  - **certstrap** - A certificate manager
+  - **sipcalc** - An ip subnet calculator 
 
 
 Installation
