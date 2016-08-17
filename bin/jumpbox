@@ -234,6 +234,15 @@ install_bosh_cli() {
 	fi
 }
 
+install_cf_cli() {
+	if ! have cf -v ${1}; then
+	  sudo curl -L "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
+	  sudo mv cf  /usr/local/bin/cf
+  	sudo chmod 0755 /usr/local/bin/cf
+  	installed cf -v "CF CLI"
+	fi
+}
+
 install_certstrap() {
 	sudo rm -f /usr/local/bin/certstrap || true
 	sudo curl -o /usr/local/bin/certstrap \
@@ -330,6 +339,7 @@ case "$1" in
 	install_rvm
 	install_ruby     ${WANT_RUBY_VERSION:-2.2.4}
 	install_bosh_cli ${WANT_BOSH_VERSION:-1.3184.1.0}
+	install_cf_cli
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
