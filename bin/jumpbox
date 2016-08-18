@@ -421,11 +421,14 @@ case "$1" in
 	version rvm -v
 	version bosh -v
 	version bosh-init -v
+	version cf -v
 	version jq --version
 	version spruce -v
 	version safe -v
 	version vault -v
 	version genesis -v
+	version certstrap -v
+	version sipcalc -v
 	git_config
 	echo
 	say "To bootstrap this installation,  try \`jumpbox system\`"
