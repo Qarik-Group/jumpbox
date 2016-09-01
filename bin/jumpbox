@@ -376,7 +376,6 @@ case "$1" in
 
 	sudo useradd -c "${full_name}" -g staff -m -s /bin/bash "${user_name}"
 	sudo usermod -aG jumpbox "${user_name}"
-	sudo passwd "${user_name}"
 	echo
 	echo "You should run \`jumpbox user\` now, as ${user_name}:"
 	echo "  sudo -iu ${user_name}"
