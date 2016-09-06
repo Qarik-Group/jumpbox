@@ -324,6 +324,14 @@ configure_git_identity() {
 	ok "git is configured"
 }
 
+append_ssh_key() {
+	user=$1
+	key=$2
+	user_home=$(getent passwd ${user} | cut -d ":" -f 6)
+	sudo -u ${user} mkdir -p ${user_home}/.ssh/
+	sudo -u ${user} bash -c "echo ${key} >> ${user_home}/.ssh/authorized_keys"
+}
+
 all_done() {
 	echo
 	echo
@@ -376,6 +384,20 @@ case "$1" in
 
 	sudo useradd -c "${full_name}" -g staff -m -s /bin/bash "${user_name}"
 	sudo usermod -aG jumpbox "${user_name}"
+
+	user_home=$(getent passwd ${user_name} | cut -d: -f6)
+
+	echo
+	echo "Enter the public key for this user's .ssh/authorized_keys file:"
+	read -r ssh_key
+	append_ssh_key "${user_name}" "${ssh_key}"
+
+	while [[ -n ${ssh_key} ]]; do
+		echo "Enter an additional public key for this user (leave blank to continue):"
+		read -r ssh_key
+		append_ssh_key "${user_name}" "${ssh_key}"
+	done
+
 	echo
 	echo "You should run \`jumpbox user\` now, as ${user_name}:"
 	echo "  sudo -iu ${user_name}"
