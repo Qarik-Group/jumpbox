@@ -327,9 +327,11 @@ configure_git_identity() {
 append_ssh_key() {
 	user=$1
 	key=$2
-	user_home=$(getent passwd ${user} | cut -d ":" -f 6)
-	sudo -u ${user} mkdir -p ${user_home}/.ssh/
-	sudo -u ${user} bash -c "echo ${key} >> ${user_home}/.ssh/authorized_keys"
+	if [[ -n ${key} ]]; then
+		user_home=$(getent passwd ${user} | cut -d ":" -f 6)
+		sudo -u ${user} mkdir -p ${user_home}/.ssh/
+		sudo -u ${user} bash -c "echo ${key} >> ${user_home}/.ssh/authorized_keys"
+	fi
 }
 
 all_done() {
