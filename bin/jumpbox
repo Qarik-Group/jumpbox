@@ -58,7 +58,7 @@ have() {
 
 	step "Checking for ${bin} v${vers}"
 	if [[ -n "$(command -v ${bin})" ]]; then
-		if ${bin} ${flag} 2>/dev/null | grep -q "${vers}"; then
+		if ${bin} ${flag} 2>&1 | grep -q "${vers}"; then
 			ok "${bin} is already installed ($(${bin} ${flag} 2>&1))"
 			return 0
 		fi
