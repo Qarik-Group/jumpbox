@@ -151,7 +151,7 @@ install_vault() {
 	if ! have vault -v $1; then
 		curl -LSs -o /tmp/vault.zip \
 			https://releases.hashicorp.com/vault/${1}/vault_${1}_linux_amd64.zip
-		(cd /usr/local/bin ; sudo unzip -u /tmp/vault.zip ; rm /tmp/vault.zip)
+		(cd /usr/local/bin ; sudo unzip -qu /tmp/vault.zip ; rm /tmp/vault.zip)
 		sudo chmod 0755 /usr/local/bin/vault
 		installed vault -v
 	fi
@@ -230,7 +230,7 @@ install_cf_cli() {
 
 install_certstrap() {
 	sudo rm -f /usr/local/bin/certstrap || true
-	sudo curl -o /usr/local/bin/certstrap \
+	sudo curl -LSs -o /usr/local/bin/certstrap \
 	https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/certstrap
 	sudo chmod 0755 /usr/local/bin/certstrap
 	echo "Installed certstrap"
@@ -238,7 +238,7 @@ install_certstrap() {
 
 install_sipcalc() {
 	sudo rm -f /usr/local/bin/sipcalc || true
-	sudo curl -o /usr/local/bin/sipcalc \
+	sudo curl -LSs -o /usr/local/bin/sipcalc \
 	https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/sipcalc
 	sudo chmod 0755 /usr/local/bin/sipcalc
 	echo "Installed sipcalc"
