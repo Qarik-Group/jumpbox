@@ -111,7 +111,7 @@ install_core_packages() {
 	elif [[ -n $(command -v zypper) ]]; then
 		step "Installing Core System Packages (via zypper)"
 		sudo zypper refresh >/dev/null
-		sudo zypper --non-interactive install -lf git-core unzip tmux pwgen tree nmap
+		sudo zypper --non-interactive install -lf git-core unzip tmux pwgen tree nmap patch
 	fi
 }
 
