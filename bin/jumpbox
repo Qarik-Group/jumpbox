@@ -221,10 +221,10 @@ install_bosh_cli() {
 
 install_cf_cli() {
 	if ! have cf -v ${1}; then
-	  sudo curl -L "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
-	  sudo mv cf  /usr/local/bin/cf
-  	sudo chmod 0755 /usr/local/bin/cf
-  	installed cf -v "CF CLI"
+		curl -LSs "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
+		sudo mv cf  /usr/local/bin/cf
+		sudo chmod 0755 /usr/local/bin/cf
+		installed cf -v "CF CLI"
 	fi
 }
 
@@ -334,7 +334,6 @@ case "$1" in
 	install_rvm
 	install_ruby     ${WANT_RUBY_VERSION:-2.2.4}
 	install_bosh_cli ${WANT_BOSH_VERSION:-1.3184.1.0}
-	install_cf_cli
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
@@ -349,6 +348,7 @@ case "$1" in
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
+	install_cf_cli    ${WANT_CF_CLI:-6.21}
 	install_certstrap
 	install_sipcalc
 	passwordless_sudo
