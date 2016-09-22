@@ -369,8 +369,11 @@ case "$1" in
 		read user_name
 	done
 
-	sudo useradd -c "${full_name}" -g staff -m -s /bin/bash "${user_name}"
-	sudo usermod -aG jumpbox "${user_name}"
+	sudo groupadd -f staff
+	if [[ -z $(getent passwd ${user_name}) ]]; then
+		sudo useradd -c "${full_name}" -g staff -m -s /bin/bash ${user_name}
+		sudo usermod -aG jumpbox ${user_name}
+	fi
 
 	user_home=$(getent passwd ${user_name} | cut -d: -f6)
 
