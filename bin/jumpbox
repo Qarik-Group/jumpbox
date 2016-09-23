@@ -333,7 +333,7 @@ case "$1" in
 	hello
 	install_rvm
 	install_ruby     ${WANT_RUBY_VERSION:-2.2.4}
-	install_bosh_cli ${WANT_BOSH_VERSION:-1.3184.1.0}
+	install_bosh_cli ${WANT_BOSH_VERSION:-1.3262.4.0}
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
