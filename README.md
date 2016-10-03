@@ -52,7 +52,9 @@ once.  This will set up `rvm`, the ruby dependencies and the
     jumpbox useradd
     Full name: Joe User
     Username:  juser
-    sudo] password for ubuntu:
+    Enter the public key for this user's .ssh/authorized_keys file:
+    ssh-rsa AAAAB3N...
+    Enter an additional public key for this user (leave blank to continue):
     You should run `jumpbox user` now, as juser:
       sudo -iu juser
       jumpbox user
