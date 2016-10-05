@@ -18,7 +18,7 @@ all necessary utilities for running BOSH deployments, including:
   - **safe** - An alternate CLI for Hashicorp's Vault
   - **jq** - A JSON query utility
   - **certstrap** - A certificate manager
-  - **sipcalc** - An ip subnet calculator 
+  - **sipcalc** - An ip subnet calculator
 
 
 Installation
@@ -56,7 +56,7 @@ once.  This will set up `rvm`, the ruby dependencies and the
     ssh-rsa AAAAB3N...
     Enter an additional public key for this user (leave blank to continue):
     You should run `jumpbox user` now, as juser:
-      sudo -iu juser
+      su - juser
       jumpbox user
 
 Contributing
