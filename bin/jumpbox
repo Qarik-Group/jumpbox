@@ -346,9 +346,9 @@ case "$1" in
 	install_spruce    ${WANT_SPRUCE_VERSION:-latest}
 	install_safe      ${WANT_SAFE_VERSION:-latest}
 	install_vault     ${WANT_VAULT_VERSION:-0.6.0}
-	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.81}
+	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.101}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
-	install_cf_cli    ${WANT_CF_CLI:-6.21}
+	install_cf_cli    ${WANT_CF_CLI:-6.25}
 	install_certstrap
 	install_sipcalc
 	passwordless_sudo
