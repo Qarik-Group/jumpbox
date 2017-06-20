@@ -219,6 +219,14 @@ install_bosh_cli() {
 	fi
 }
 
+install_bosh2_cli() {
+	if ! have bosh -v ${1}; then
+		sudo curl -LSs -o /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${1}-linux-amd64
+		sudo chmod 0755 /usr/local/bin/bosh
+		installed bosh -v "BOSH CLI"
+	fi
+}
+
 install_cf_cli() {
 	if ! have cf -v ${1}; then
 		curl -LSs "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
@@ -348,6 +356,7 @@ case "$1" in
 	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.101}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
 	install_cf_cli    ${WANT_CF_CLI:-6.25}
+	install_bosh2_cli ${WANT_BOSH2_CLI:-2.0.23}
 	install_certstrap
 	install_sipcalc
 	passwordless_sudo
@@ -431,6 +440,7 @@ case "$1" in
 	version rvm -v
 	version bosh -v
 	version bosh-init -v
+	version bosh2 -v
 	version cf -v
 	version jq --version
 	version spruce -v
