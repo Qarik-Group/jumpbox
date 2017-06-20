@@ -220,10 +220,10 @@ install_bosh_cli() {
 }
 
 install_bosh2_cli() {
-	if ! have bosh -v ${1}; then
-		sudo curl -LSs -o /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${1}-linux-amd64
-		sudo chmod 0755 /usr/local/bin/bosh
-		installed bosh -v "BOSH CLI"
+	if ! have bosh2 -v ${1}; then
+		sudo curl -LSs -o /usr/local/bin/bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${1}-linux-amd64
+		sudo chmod 0755 /usr/local/bin/bosh2
+		installed bosh2 -v "BOSH CLI"
 	fi
 }
 
