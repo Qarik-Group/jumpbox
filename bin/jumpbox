@@ -398,7 +398,7 @@ case "$1" in
 
 	echo
 	echo "You should run \`jumpbox user\` now, as ${user_name}:"
-	echo "  su - ${user_name}"
+	echo "  sudo -iu ${user_name}"
 	echo "  jumpbox user"
 	echo
 	;;
