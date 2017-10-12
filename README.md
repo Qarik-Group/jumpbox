@@ -56,7 +56,7 @@ once.  This will set up `rvm`, the ruby dependencies and the
     ssh-rsa AAAAB3N...
     Enter an additional public key for this user (leave blank to continue):
     You should run `jumpbox user` now, as juser:
-      su - juser
+      sudo -iu juser
       jumpbox user
 
 Contributing
