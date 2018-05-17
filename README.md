@@ -8,6 +8,8 @@ only that jumpbox can connect to it.
 This repository contains `jumpbox`, a utility that will install
 all necessary utilities for running BOSH deployments, including:
 
+  - **rvm** - For managing versions of Ruby and the BOSH CLI gems
+  - **ruby** - For rendering templates
   - **bosh** - The BOSH CLI itself
   - **cf** - The CF CLI itself
   - **genesis** - For creating multi-tiered deployment repos

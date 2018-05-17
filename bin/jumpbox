@@ -176,32 +176,32 @@ install_genesis() {
 	fi
 }
 
-#Install_rvm() {
-#	step "Installing rvm"
-#	if [[ ! -f ~/.rvmrc ]]; then
-#		echo rvm_silence_path_mismatch_check_flag=1 > ~/.rvmrc
-#	fi
-#	if [[ -z "$(command -v rvm)" ]]; then
-#		say "RVM is not already installed"
-#		say "Importing GPG key..."
-#
-#		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-#		say "Running RVM install via curl | sh"
-#		curl -sSL https://get.rvm.io | bash -s stable
-#
-#		source ~/.rvm/scripts/rvm
-#		ok "RVM is installed ($(rvm -v 2>&1))"
-#	else
-#		ok "RVM is already installed ($(rvm -v 2>&1))"
-#	fi
-#}
+install_rvm() {
+	step "Installing rvm"
+	if [[ ! -f ~/.rvmrc ]]; then
+		echo rvm_silence_path_mismatch_check_flag=1 > ~/.rvmrc
+	fi
+	if [[ -z "$(command -v rvm)" ]]; then
+		say "RVM is not already installed"
+		say "Importing GPG key..."
 
-#install_ruby() {
-#	if ! have ruby -v ${1}; then
-#		rvm install ruby-$1
-#		installed ruby -v
-#	fi
-#}
+		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+		say "Running RVM install via curl | sh"
+		curl -sSL https://get.rvm.io | bash -s stable
+
+		source ~/.rvm/scripts/rvm
+		ok "RVM is installed ($(rvm -v 2>&1))"
+	else
+		ok "RVM is already installed ($(rvm -v 2>&1))"
+	fi
+}
+
+install_ruby() {
+	if ! have ruby -v ${1}; then
+		rvm install ruby-$1
+		installed ruby -v
+	fi
+}
 
 install_bosh_cli() {
 	if ! have bosh -v ${1}; then
@@ -322,9 +322,8 @@ PATH=/usr/local/bin:$PATH
 case "$1" in
 (user)
 	hello
-	# If we add uaac in future, we will need ruby
-	#install_rvm
-	#install_ruby     ${WANT_RUBY_VERSION:-2.3.1}
+	install_rvm
+	install_ruby     ${WANT_RUBY_VERSION:-2.5.1}
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
@@ -419,6 +418,8 @@ case "$1" in
 	hello
 	step "Checking jumpbox installation"
 	version jumpbox -v
+	version ruby -v
+	version rvm -v
 	version bosh -v
 	version cf -v
 	version jq --version
