@@ -176,54 +176,38 @@ install_genesis() {
 	fi
 }
 
-install_rvm() {
-	step "Installing rvm"
-	if [[ ! -f ~/.rvmrc ]]; then
-		echo rvm_silence_path_mismatch_check_flag=1 > ~/.rvmrc
-	fi
-	if [[ -z "$(command -v rvm)" ]]; then
-		say "RVM is not already installed"
-		say "Importing GPG key..."
+#Install_rvm() {
+#	step "Installing rvm"
+#	if [[ ! -f ~/.rvmrc ]]; then
+#		echo rvm_silence_path_mismatch_check_flag=1 > ~/.rvmrc
+#	fi
+#	if [[ -z "$(command -v rvm)" ]]; then
+#		say "RVM is not already installed"
+#		say "Importing GPG key..."
+#
+#		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+#		say "Running RVM install via curl | sh"
+#		curl -sSL https://get.rvm.io | bash -s stable
+#
+#		source ~/.rvm/scripts/rvm
+#		ok "RVM is installed ($(rvm -v 2>&1))"
+#	else
+#		ok "RVM is already installed ($(rvm -v 2>&1))"
+#	fi
+#}
 
-		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-		say "Running RVM install via curl | sh"
-		curl -sSL https://get.rvm.io | bash -s stable
-
-		source ~/.rvm/scripts/rvm
-		ok "RVM is installed ($(rvm -v 2>&1))"
-	else
-		ok "RVM is already installed ($(rvm -v 2>&1))"
-	fi
-}
-
-install_ruby() {
-	if ! have ruby -v ${1}; then
-		rvm install ruby-$1
-		installed ruby -v
-	fi
-}
-
-install_bosh_init() {
-	if ! have bosh-init -v ${1}; then
-		sudo curl -LSs -o /usr/local/bin/bosh-init \
-			https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${1}-linux-amd64
-		sudo chmod 0755 /usr/local/bin/bosh-init
-		installed bosh-init -v
-	fi
-}
+#install_ruby() {
+#	if ! have ruby -v ${1}; then
+#		rvm install ruby-$1
+#		installed ruby -v
+#	fi
+#}
 
 install_bosh_cli() {
 	if ! have bosh -v ${1}; then
-		gem install --no-ri --no-rdoc --version "${1}" bosh_cli
+		sudo curl -LSs -o /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${1}-linux-amd64
+		sudo chmod 0755 /usr/local/bin/bosh
 		installed bosh -v "BOSH CLI"
-	fi
-}
-
-install_bosh2_cli() {
-	if ! have bosh2 -v ${1}; then
-		sudo curl -LSs -o /usr/local/bin/bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${1}-linux-amd64
-		sudo chmod 0755 /usr/local/bin/bosh2
-		installed bosh2 -v "BOSH CLI"
 	fi
 }
 
@@ -338,9 +322,9 @@ PATH=/usr/local/bin:$PATH
 case "$1" in
 (user)
 	hello
-	install_rvm
-	install_ruby     ${WANT_RUBY_VERSION:-2.3.1}
-	install_bosh_cli ${WANT_BOSH_VERSION:-1.3262.4.0}
+	# If we add uaac in future, we will need ruby
+	#install_rvm
+	#install_ruby     ${WANT_RUBY_VERSION:-2.3.1}
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
@@ -352,11 +336,10 @@ case "$1" in
 	install_jq        ${WANT_JQ_VERSION:-1.5}
 	install_spruce    ${WANT_SPRUCE_VERSION:-latest}
 	install_safe      ${WANT_SAFE_VERSION:-latest}
-	install_vault     ${WANT_VAULT_VERSION:-0.7.3}
-	install_bosh_init ${WANT_BOSH_INIT_VERSION:-0.0.101}
+	install_vault     ${WANT_VAULT_VERSION:-0.9.6}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
 	install_cf_cli    ${WANT_CF_CLI:-6.25}
-	install_bosh2_cli ${WANT_BOSH2_CLI:-2.0.23}
+	install_bosh_cli  ${WANT_BOSH2_CLI:-3.0.1}
 	install_certstrap
 	install_sipcalc
 	passwordless_sudo
@@ -436,11 +419,7 @@ case "$1" in
 	hello
 	step "Checking jumpbox installation"
 	version jumpbox -v
-	version ruby -v
-	version rvm -v
 	version bosh -v
-	version bosh-init -v
-	version bosh2 -v
 	version cf -v
 	version jq --version
 	version spruce -v
