@@ -9,8 +9,7 @@ This repository contains `jumpbox`, a utility that will install
 all necessary utilities for running BOSH deployments, including:
 
   - **rvm** - For managing versions of Ruby and the BOSH CLI gems
-  - **ruby** - For the BOSH CLI
-  - **bosh-init** - Tool for bootstrapping a new BOSH director
+  - **ruby** - For rendering templates
   - **bosh** - The BOSH CLI itself
   - **cf** - The CF CLI itself
   - **genesis** - For creating multi-tiered deployment repos
@@ -42,8 +41,7 @@ directories, like `spruce`, `jq`, etc.
     jumpbox system
 
 Every user on the jumpbox needs to run **user** mode at least
-once.  This will set up `rvm`, the ruby dependencies and the
-`bosh` CLI utility, inside that user's home directory.
+once.
 
     jumpbox user
 
