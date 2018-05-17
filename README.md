@@ -16,6 +16,7 @@ all necessary utilities for running BOSH deployments, including:
   - **genesis** - For creating multi-tiered deployment repos
   - **spruce** - A YAML multitool for managing BOSH manifests
   - **safe** - An alternate CLI for Hashicorp's Vault
+  - vault - The offical CLI for Hashicorp's Vault
   - **jq** - A JSON query utility
   - **certstrap** - A certificate manager
   - **sipcalc** - An ip subnet calculator
