@@ -101,17 +101,17 @@ install_core_packages() {
 	if [[ -n $(command -v apt-get) ]]; then
 		step "Installing Core System Packages (via apt-get)"
 		sudo apt-get update >/dev/null
-		sudo apt-get install -y git tmux tree pwgen unzip nmap g++
+		sudo apt-get install -y git tmux tree pwgen unzip nmap g++ ruby
 
 	elif [[ -n $(command -v yum) ]]; then
 		step "Installing Core System Packages (via yum)"
 		sudo yum update -y >/dev/null
-		sudo yum install -y git tmux tree pwgen unzip nmap
+		sudo yum install -y git tmux tree pwgen unzip nmap ruby
 
 	elif [[ -n $(command -v zypper) ]]; then
 		step "Installing Core System Packages (via zypper)"
 		sudo zypper refresh >/dev/null
-		sudo zypper --non-interactive install -lf git-core unzip tmux pwgen tree nmap patch curl vim
+		sudo zypper --non-interactive install -lf git-core unzip tmux pwgen tree nmap patch curl vim ruby
 	fi
 }
 
@@ -173,33 +173,6 @@ install_genesis() {
 			https://github.com/starkandwayne/genesis/releases/download/v${v}/genesis
 		sudo chmod 0755 /usr/local/bin/genesis
 		installed genesis -v
-	fi
-}
-
-install_rvm() {
-	step "Installing rvm"
-	if [[ ! -f ~/.rvmrc ]]; then
-		echo rvm_silence_path_mismatch_check_flag=1 > ~/.rvmrc
-	fi
-	if [[ -z "$(command -v rvm)" ]]; then
-		say "RVM is not already installed"
-		say "Importing GPG key..."
-
-		gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-		say "Running RVM install via curl | sh"
-		curl -sSL https://get.rvm.io | bash -s stable
-
-		source ~/.rvm/scripts/rvm
-		ok "RVM is installed ($(rvm -v 2>&1))"
-	else
-		ok "RVM is already installed ($(rvm -v 2>&1))"
-	fi
-}
-
-install_ruby() {
-	if ! have ruby -v ${1}; then
-		rvm install ruby-$1
-		installed ruby -v
 	fi
 }
 
@@ -322,8 +295,6 @@ PATH=/usr/local/bin:$PATH
 case "$1" in
 (user)
 	hello
-	install_rvm
-	install_ruby     ${WANT_RUBY_VERSION:-2.5.1}
 	configure_git_identity
 	all_done
 	say "(You should now log out and log back in)"
@@ -419,7 +390,6 @@ case "$1" in
 	step "Checking jumpbox installation"
 	version jumpbox -v
 	version ruby -v
-	version rvm -v
 	version bosh -v
 	version cf -v
 	version jq --version
