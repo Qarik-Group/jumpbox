@@ -103,6 +103,10 @@ install_core_packages() {
 		sudo apt-get update >/dev/null
 		sudo apt-get install -y git tmux tree pwgen unzip nmap g++ ruby
 
+		# prefer bash over dash as /bin/sh
+		echo "dash dash/sh boolean false" | debconf-set-selections
+		DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
 	elif [[ -n $(command -v yum) ]]; then
 		step "Installing Core System Packages (via yum)"
 		sudo yum update -y >/dev/null
