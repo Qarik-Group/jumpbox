@@ -195,7 +195,7 @@ install_bosh_cli() {
 
 install_cf_cli() {
 	if ! have cf -v ${1}; then
-		curl -LSs "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
+		curl -LSs "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx cf
 		sudo mv cf  /usr/local/bin/cf
 		sudo chmod 0755 /usr/local/bin/cf
 		installed cf -v "CF CLI"
