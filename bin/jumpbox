@@ -40,7 +40,7 @@ version() {
 	local flag=$2
 
 	if [[ -n "$(command -v ${bin})" ]]; then
-		ok "${bin} installed - $(${bin} ${flag} 2>&1)"
+		ok "${bin} installed - $(${bin} ${flag} 2>&1 | head -n1)"
 	else
 		fail "${bin} not installed"
 	fi
