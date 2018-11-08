@@ -298,7 +298,6 @@ case "$1" in
 	hello
 	configure_git_identity
 	all_done
-	say "(You should now log out and log back in)"
 	;;
 
 (system)
