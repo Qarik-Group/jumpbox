@@ -202,14 +202,6 @@ install_cf_cli() {
 	fi
 }
 
-install_certstrap() {
-	sudo rm -f /usr/local/bin/certstrap || true
-	sudo curl -LSs -o /usr/local/bin/certstrap \
-	https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/certstrap
-	sudo chmod 0755 /usr/local/bin/certstrap
-	echo "Installed certstrap"
-}
-
 install_sipcalc() {
 	sudo rm -f /usr/local/bin/sipcalc || true
 	sudo curl -LSs -o /usr/local/bin/sipcalc \
@@ -319,7 +311,6 @@ case "$1" in
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
 	install_cf_cli    ${WANT_CF_CLI:-6.25}
 	install_bosh_cli  ${WANT_BOSH2_CLI:-3.0.1}
-	install_certstrap
 	install_sipcalc
 	passwordless_sudo
 	all_done
@@ -406,7 +397,6 @@ case "$1" in
 	version safe -v
 	version vault -v
 	version genesis -v
-	version certstrap -v
 	version sipcalc -v
 	git_config
 	echo
