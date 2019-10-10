@@ -306,13 +306,13 @@ case "$1" in
 	export HOME=$HOME/.jumpbox
 	hello
 	install_core_packages
-	install_jq        ${WANT_JQ_VERSION:-1.5}
+	install_jq        ${WANT_JQ_VERSION:-1.6}
 	install_spruce    ${WANT_SPRUCE_VERSION:-latest}
 	install_safe      ${WANT_SAFE_VERSION:-latest}
-	install_vault     ${WANT_VAULT_VERSION:-0.9.6}
+	install_vault     ${WANT_VAULT_VERSION:-1.2.3}
 	install_genesis   ${WANT_GENESIS_VERSION:-latest}
-	install_cf_cli    ${WANT_CF_CLI:-6.25}
-	install_bosh_cli  ${WANT_BOSH2_CLI:-3.0.1}
+	install_cf_cli    ${WANT_CF_CLI:-6.46.1}
+	install_bosh_cli  ${WANT_BOSH2_CLI:-6.1.0}
 	install_sipcalc
 	passwordless_sudo
 	all_done
